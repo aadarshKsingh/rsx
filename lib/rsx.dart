@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:rsx/Pages/home.dart';
 import 'package:rsx/Pages/settings.dart';
+import 'package:rsx/Pages/sources.dart';
 
 class RSX extends StatefulWidget {
   const RSX({super.key});
@@ -25,6 +26,40 @@ class _RSXState extends State<RSX> {
               fontWeight: FontWeight.bold,
               letterSpacing: 15),
         ),
+        actions: [
+          PopupMenuButton<String>(
+            popUpAnimationStyle: AnimationStyle(
+                curve: Curves.decelerate,
+                duration: const Duration(milliseconds: 200)),
+            onSelected: (value) {
+              switch (value) {
+                case 'Sources':
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Sources()));
+                  break;
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return {'Sources'}.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Row(
+                    children: [
+                      const Icon(
+                        IconlyBroken.filter,
+                        size: 20.0,
+                      ),
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      Text(choice),
+                    ],
+                  ),
+                );
+              }).toList();
+            },
+          ),
+        ],
       ),
       bottomNavigationBar: NavigationBar(
           selectedIndex: _selectedIndex,
@@ -32,9 +67,9 @@ class _RSXState extends State<RSX> {
                 _selectedIndex = index;
               }),
           destinations: const [
-            NavigationDestination(icon: Icon(IconlyBold.home), label: "Home"),
+            NavigationDestination(icon: Icon(IconlyLight.home), label: "Home"),
             NavigationDestination(
-                icon: Icon(IconlyBold.setting), label: "Settings")
+                icon: Icon(IconlyLight.setting), label: "Settings")
           ]),
       body: pages[_selectedIndex],
     );
