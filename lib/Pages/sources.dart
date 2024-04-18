@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:rsx/constants.dart';
 
 class Sources extends StatefulWidget {
   const Sources({super.key});
@@ -9,12 +10,6 @@ class Sources extends StatefulWidget {
 }
 
 class _SourcesState extends State<Sources> {
-  Map<String, String> sources = {
-    "YCombinator": "https://news.ycombinator.com/rss",
-    "HackerNoon": "https://hackernoon.com/feed",
-    "AndroidAuthority": "http://feed.androidauthority.com"
-  };
-  Map<String, String> selected = {};
   late TextEditingController _name;
   late TextEditingController _url;
   @override
@@ -63,7 +58,7 @@ class _SourcesState extends State<Sources> {
                   TextButton(
                     onPressed: () {
                       Map<String, String> source = {_name.text: _url.text};
-                      sources.addAll(source);
+                      Constants.sources.addAll(source);
                       Navigator.pop(context);
                     },
                     child: const Text('Save'),
@@ -75,27 +70,29 @@ class _SourcesState extends State<Sources> {
         ],
       ),
       body: ListView.builder(
-        itemCount: sources.length,
+        itemCount: Constants.sources.length,
         itemBuilder: (context, index) {
-          bool _isSelected =
-              selected.keys.contains(sources.keys.elementAt(index));
+          // bool _isSelected = Constants.selected.keys
+          //     .contains(Constants.sources.keys.elementAt(index));
+          bool _isSelected = true;
           return CheckboxListTile(
             value: _isSelected,
             onChanged: (val) {
               setState(() {
-                _isSelected = val ?? false;
+                _isSelected = val ?? true;
                 if (_isSelected) {
                   final source = {
-                    sources.keys.elementAt(index):
-                        sources.values.elementAt(index)
+                    Constants.sources.keys.elementAt(index):
+                        Constants.sources.values.elementAt(index)
                   };
-                  selected.addAll(source);
+                  Constants.selected.addAll(source);
                 } else {
-                  selected.remove(sources.keys.elementAt(index));
+                  Constants.selected
+                      .remove(Constants.sources.keys.elementAt(index));
                 }
               });
             },
-            title: Text(sources.keys.elementAt(index).toString()),
+            title: Text(Constants.sources.keys.elementAt(index).toString()),
           );
         },
       ),

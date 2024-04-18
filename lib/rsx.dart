@@ -3,6 +3,7 @@ import 'package:iconly/iconly.dart';
 import 'package:rsx/Pages/home.dart';
 import 'package:rsx/Pages/settings.dart';
 import 'package:rsx/Pages/sources.dart';
+import 'package:rsx/util.dart';
 
 class RSX extends StatefulWidget {
   const RSX({super.key});
@@ -14,6 +15,12 @@ class RSX extends StatefulWidget {
 class _RSXState extends State<RSX> {
   static const List<Widget> pages = [Home(), Settings()];
   int _selectedIndex = 0;
+  @override
+  void initState() {
+    Utility().sendRSS();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +34,11 @@ class _RSXState extends State<RSX> {
               letterSpacing: 15),
         ),
         actions: [
+          IconButton(
+              onPressed: () => setState(() {
+                    Utility().sendRSS();
+                  }),
+              icon: const Icon(IconlyLight.info_circle)),
           PopupMenuButton<String>(
             popUpAnimationStyle: AnimationStyle(
                 curve: Curves.decelerate,
