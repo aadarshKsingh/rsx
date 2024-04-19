@@ -17,8 +17,9 @@ class _RSXState extends State<RSX> {
   int _selectedIndex = 0;
   @override
   void initState() {
-    Utility().sendRSS();
     super.initState();
+
+    Utility().updateRSS();
   }
 
   @override
@@ -36,7 +37,7 @@ class _RSXState extends State<RSX> {
         actions: [
           IconButton(
               onPressed: () => setState(() {
-                    Utility().sendRSS();
+                    Utility().updateRSS();
                   }),
               icon: const Icon(IconlyLight.info_circle)),
           PopupMenuButton<String>(

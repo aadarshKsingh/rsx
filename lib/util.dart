@@ -3,20 +3,24 @@ import 'package:http/http.dart' as http;
 import 'package:rsx/constants.dart';
 
 class Utility {
-  static List<RssItem> feedItems = [];
-  void fetchRSS(String url) {
+  List<RssItem> feedItems = [];
+
+  Future<void> fetchRSS(String url) async {
     final client = http.Client();
-    client.get(Uri.parse(url)).then((response) {
-      return response.body;
-    }).then((body) {
-      final channel = RssFeed.parse(body);
-      feedItems.addAll(channel.items);
-    });
+    final response = await client.get(Uri.parse(url)); // Await the response
+    final body = await response.body; // Await the body
+    final channel = RssFeed.parse(body);
+    feedItems.addAll(channel.items);
   }
 
-  void sendRSS() {
+  Future<void> updateRSS() async {
     for (var url in Constants.sources.values) {
-      fetchRSS(url);
+      await fetchRSS(url); // Await each fetchRSS call
     }
+  }
+
+  Future<List<RssItem>> getRSS() async {
+    await updateRSS(); // Ensure data is fetched before returning
+    return feedItems;
   }
 }
