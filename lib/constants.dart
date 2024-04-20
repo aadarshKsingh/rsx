@@ -1,6 +1,6 @@
 class Constants {
   static Map<String, String> sources = {
-    "XDA": "https://www.xda-developers.com/feed/tag/rss/",
+    "XDA": "https://www.xda-developers.com/feed",
     "HackerNoon": "https://hackernoon.com/feed",
     "AndroidAuthority": "http://feed.androidauthority.com"
   };
