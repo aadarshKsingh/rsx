@@ -1,5 +1,6 @@
 import 'package:dart_rss/dart_rss.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rsx/util.dart';
 
 class Home extends StatefulWidget {
@@ -23,9 +24,9 @@ class _HomeState extends State<Home> {
       future: Utility().getRSS(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Center(child: Text('Error fetching data'));
+          return Center(child: Text(snapshot.error.toString()));
         } else {
           return ListView.builder(
             itemCount: snapshot.data!.length,
@@ -52,7 +53,18 @@ class _HomeState extends State<Home> {
                             .toString()
                             .substring(0, 25),
                         style: const TextStyle(
-                            fontWeight: FontWeight.w300, fontSize: 15.0),
+                            fontWeight: FontWeight.w300, fontSize: 12.0),
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Text(
+                        Bidi.stripHtmlIfNeeded(
+                                snapshot.data![index].content!.value)
+                            .trim(),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.left,
                       ),
                     ],
                   ),
