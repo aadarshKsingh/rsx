@@ -72,9 +72,8 @@ class _SourcesState extends State<Sources> {
       body: ListView.builder(
         itemCount: Constants.sources.length,
         itemBuilder: (context, index) {
-          // bool _isSelected = Constants.selected.keys
-          //     .contains(Constants.sources.keys.elementAt(index));
-          bool _isSelected = true;
+          bool _isSelected = Constants.selected.keys
+              .contains(Constants.sources.keys.elementAt(index));
           return CheckboxListTile(
             value: _isSelected,
             onChanged: (val) {

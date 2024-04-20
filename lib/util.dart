@@ -14,7 +14,7 @@ class Utility {
   }
 
   Future<void> updateRSS() async {
-    for (var url in Constants.sources.values) {
+    for (var url in Constants.selected.values) {
       await fetchRSS(url); // Await each fetchRSS call
     }
   }
