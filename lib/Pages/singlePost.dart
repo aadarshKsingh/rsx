@@ -14,43 +14,45 @@ class SinglePost extends StatelessWidget {
       appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.only(left: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              post.title.toString(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 25.0,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                post.title.toString(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25.0,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 5.0,
-            ),
-            Text(post.dc!.creator.toString()),
-            Text(
-              post.pubDate.toString().substring(0, 16),
-            ),
-            const SizedBox(
-              height: 25.0,
-            ),
-            HtmlWidget(
-              post.content!.value.toString(),
-              textStyle: const TextStyle(fontSize: 15.0),
-            ),
-            const SizedBox(
-              height: 25.0,
-            ),
-            GestureDetector(
-              child: const Text(
-                "Original Post",
-                style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: Colors.lightBlueAccent),
+              const SizedBox(
+                height: 5.0,
               ),
-              onTap: () => launchUrlString(post.link.toString()),
-            )
-          ],
+              Text(post.dc!.creator.toString()),
+              Text(
+                post.pubDate.toString().substring(0, 16),
+              ),
+              const SizedBox(
+                height: 25.0,
+              ),
+              HtmlWidget(
+                post.content!.value.toString(),
+                textStyle: const TextStyle(fontSize: 15.0),
+              ),
+              const SizedBox(
+                height: 25.0,
+              ),
+              GestureDetector(
+                child: const Text(
+                  "Original Post",
+                  style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: Colors.lightBlueAccent),
+                ),
+                onTap: () => launchUrlString(post.link.toString()),
+              )
+            ],
+          ),
         ),
       ),
     );

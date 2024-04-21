@@ -57,9 +57,11 @@ class _SourcesState extends State<Sources> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Map<String, String> source = {_name.text: _url.text};
-                      Constants.sources.addAll(source);
-                      Navigator.pop(context);
+                      setState(() {
+                        Map<String, String> source = {_name.text: _url.text};
+                        Constants.sources.addAll(source);
+                        Navigator.pop(context);
+                      });
                     },
                     child: const Text('Save'),
                   ),
