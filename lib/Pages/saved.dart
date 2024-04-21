@@ -29,6 +29,7 @@ class _SettingsState extends State<Saved> {
               horizontalPadding: 5.0,
               onSwiped: (direction) {
                 Utility().removePost(Constants.savedPosts[index]);
+                Utility().saveSaved();
               },
               key: ValueKey(Constants.savedPosts[index].title),
               backgroundBuilder: (context, direction, controller) {

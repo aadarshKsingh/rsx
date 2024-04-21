@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:rsx/Pages/singlePost.dart';
-import 'package:rsx/constants.dart';
 import 'package:rsx/util.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:swipeable_tile/swipeable_tile.dart';
@@ -53,6 +52,7 @@ class _HomeState extends State<Home> {
                       horizontalPadding: 5.0,
                       onSwiped: (direction) {
                         Utility().savePost(snapshot.data![index]);
+                        Utility().saveSaved();
                       },
                       key: ValueKey(snapshot.data![index].title),
                       backgroundBuilder: (context, direction, controller) {

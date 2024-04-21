@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:rsx/constants.dart';
+import 'package:rsx/util.dart';
 
 class Sources extends StatefulWidget {
   const Sources({super.key});
@@ -60,6 +61,7 @@ class _SourcesState extends State<Sources> {
                       setState(() {
                         Map<String, String> source = {_name.text: _url.text};
                         Constants.sources.addAll(source);
+                        Utility().saveSources();
                         Navigator.pop(context);
                       });
                     },
@@ -87,6 +89,7 @@ class _SourcesState extends State<Sources> {
                         Constants.sources.values.elementAt(index)
                   };
                   Constants.selected.addAll(source);
+                  Utility().saveSelected();
                 } else {
                   Constants.selected
                       .remove(Constants.sources.keys.elementAt(index));
