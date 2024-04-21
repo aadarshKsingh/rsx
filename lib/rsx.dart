@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:rsx/Pages/home.dart';
-import 'package:rsx/Pages/settings.dart';
+import 'package:rsx/Pages/saved.dart';
 import 'package:rsx/Pages/sources.dart';
 import 'package:rsx/util.dart';
 
@@ -13,7 +13,7 @@ class RSX extends StatefulWidget {
 }
 
 class _RSXState extends State<RSX> {
-  static const List<Widget> pages = [Home(), Settings()];
+  static const List<Widget> pages = [Home(), Saved()];
   int _selectedIndex = 0;
   @override
   void initState() {
@@ -82,7 +82,7 @@ class _RSXState extends State<RSX> {
           destinations: const [
             NavigationDestination(icon: Icon(IconlyLight.home), label: "Home"),
             NavigationDestination(
-                icon: Icon(IconlyLight.setting), label: "Settings")
+                icon: Icon(IconlyLight.arrow_down), label: "Saved")
           ]),
       body: pages[_selectedIndex],
     );

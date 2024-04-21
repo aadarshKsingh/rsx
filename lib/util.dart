@@ -23,4 +23,16 @@ class Utility {
     await updateRSS(); // Ensure data is fetched before returning
     return feedItems;
   }
+
+  void savePost(RssItem item) {
+    if (!Constants.savedPosts.contains(item)) {
+      Constants.savedPosts.add(item);
+    }
+  }
+
+  void removePost(RssItem item) {
+    if (!Constants.savedPosts.contains(item)) {
+      Constants.savedPosts.remove(item);
+    }
+  }
 }

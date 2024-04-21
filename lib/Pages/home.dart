@@ -1,9 +1,12 @@
 import 'package:dart_rss/dart_rss.dart';
 import 'package:flutter/material.dart';
+import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:rsx/Pages/singlePost.dart';
+import 'package:rsx/constants.dart';
 import 'package:rsx/util.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
+import 'package:swipeable_tile/swipeable_tile.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -42,9 +45,32 @@ class _HomeState extends State<Home> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    child: Card(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 5.0, vertical: 5.0),
+                    child: SwipeableTile.swipeToTriggerCard(
+                      direction: SwipeDirection.startToEnd,
+                      shadow: const BoxShadow(),
+                      color: Colors.deepPurple.shade200.withOpacity(0.2),
+                      verticalPadding: 5.0,
+                      horizontalPadding: 5.0,
+                      onSwiped: (direction) {
+                        Utility().savePost(snapshot.data![index]);
+                      },
+                      key: ValueKey(snapshot.data![index].title),
+                      backgroundBuilder: (context, direction, controller) {
+                        if (direction == SwipeDirection.startToEnd) {
+                          return Container(
+                            padding: const EdgeInsets.only(left: 30.0),
+                            alignment: Alignment.centerLeft,
+                            child: const Row(
+                              children: [
+                                Icon(IconlyLight.arrow_down),
+                                Text("Save Post"),
+                              ],
+                            ),
+                          );
+                        } else {
+                          return const Text("");
+                        }
+                      },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10.0, vertical: 10.0),
