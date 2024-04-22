@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 // ignore: must_be_immutable
 class SinglePost extends StatelessWidget {
-  RssItem post;
+  dynamic post;
   SinglePost({super.key, required this.post});
 
   @override
@@ -28,15 +28,19 @@ class SinglePost extends StatelessWidget {
               const SizedBox(
                 height: 5.0,
               ),
-              Text(post.dc!.creator.toString()),
+              Text(post is RssItem
+                  ? post.dc!.creator.toString()
+                  : post.authors.first.name.toString()),
               Text(
-                post.pubDate.toString().substring(0, 16),
+                post is RssItem
+                    ? post.pubDate.toString().substring(0, 16)
+                    : post.updated.toString(),
               ),
               const SizedBox(
                 height: 25.0,
               ),
               HtmlWidget(
-                post.content!.value.toString(),
+                post is RssItem ? post.content!.value.toString() : post.content,
                 textStyle: const TextStyle(fontSize: 15.0),
               ),
               const SizedBox(

@@ -1,3 +1,4 @@
+import 'package:dart_rss/dart_rss.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
@@ -63,9 +64,11 @@ class _SettingsState extends State<Saved> {
                           fontSize: 17.0),
                     ),
                     Text(
-                      Constants.savedPosts[index].pubDate
-                          .toString()
-                          .substring(0, 25),
+                      Constants.savedPosts[index] is RssItem
+                          ? Constants.savedPosts[index].pubDate
+                              .toString()
+                              .substring(0, 25)
+                          : Constants.savedPosts[index].updated.toString(),
                       style: const TextStyle(
                           fontWeight: FontWeight.w300, fontSize: 12.0),
                     ),
@@ -73,8 +76,10 @@ class _SettingsState extends State<Saved> {
                       height: 5.0,
                     ),
                     Text(
-                      Bidi.stripHtmlIfNeeded(
-                              Constants.savedPosts[index].content!.value)
+                      Bidi.stripHtmlIfNeeded(Constants.savedPosts[index]
+                                  is RssItem
+                              ? Constants.savedPosts[index].content!.value
+                              : Constants.savedPosts[index].content.toString())
                           .trim(),
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,

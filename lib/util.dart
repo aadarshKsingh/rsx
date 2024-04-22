@@ -6,14 +6,23 @@ import 'package:rsx/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Utility {
-  List<RssItem> feedItems = [];
+  List rssFeedItems = [];
   late final SharedPreferences prefs;
+  // ignore: prefer_typing_uninitialized_variables
+  dynamic channel;
   Future<void> fetchRSS(String url) async {
     final client = http.Client();
-    final response = await client.get(Uri.parse(url)); // Await the response
-    final body = await response.body; // Await the body
-    final channel = RssFeed.parse(body);
-    feedItems.addAll(channel.items);
+    final response = await client.get(Uri.parse(url));
+    final body = await response.body;
+    try {
+      channel = RssFeed.parse(body);
+      rssFeedItems.addAll(channel.items);
+    } catch (e) {
+      try {
+        channel = AtomFeed.parse(body);
+        rssFeedItems.addAll(channel.items);
+      } catch (e) {}
+    }
   }
 
   Future<void> updateRSS() async {
@@ -36,18 +45,18 @@ class Utility {
     }
   }
 
-  Future<List<RssItem>> getRSS() async {
+  Future<List> getRSS() async {
     await updateRSS();
-    return feedItems;
+    return rssFeedItems;
   }
 
-  void savePost(RssItem item) {
+  void savePost(dynamic item) {
     if (!Constants.savedPosts.contains(item)) {
       Constants.savedPosts.add(item);
     }
   }
 
-  void removePost(RssItem item) {
+  void removePost(dynamic item) {
     if (!Constants.savedPosts.contains(item)) {
       Constants.savedPosts.remove(item);
     }

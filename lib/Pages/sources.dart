@@ -93,6 +93,7 @@ class _SourcesState extends State<Sources> {
                 } else {
                   Constants.selected
                       .remove(Constants.sources.keys.elementAt(index));
+                  Utility().saveSelected();
                 }
               });
             },

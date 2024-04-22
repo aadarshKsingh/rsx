@@ -26,7 +26,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<List<RssItem>>(
+      body: FutureBuilder<List>(
         future: Utility().getRSS(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -45,68 +45,74 @@ class _HomeState extends State<Home> {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     child: SwipeableTile.swipeToTriggerCard(
-                      direction: SwipeDirection.startToEnd,
-                      shadow: const BoxShadow(),
-                      color: Colors.deepPurple.shade200.withOpacity(0.2),
-                      verticalPadding: 5.0,
-                      horizontalPadding: 5.0,
-                      onSwiped: (direction) {
-                        Utility().savePost(snapshot.data![index]);
-                        Utility().saveSaved();
-                      },
-                      key: ValueKey(snapshot.data![index].title),
-                      backgroundBuilder: (context, direction, controller) {
-                        if (direction == SwipeDirection.startToEnd) {
-                          return Container(
-                            padding: const EdgeInsets.only(left: 30.0),
-                            alignment: Alignment.centerLeft,
-                            child: const Row(
-                              children: [
-                                Icon(IconlyLight.arrow_down),
-                                Text("Save Post"),
-                              ],
-                            ),
-                          );
-                        } else {
-                          return const Text("");
-                        }
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              snapshot.data![index].title.toString(),
-                              style: const TextStyle(
-                                  fontFamily: 'Gotham',
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17.0),
-                            ),
-                            Text(
-                              snapshot.data![index].pubDate
-                                  .toString()
-                                  .substring(0, 25),
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w300, fontSize: 12.0),
-                            ),
-                            const SizedBox(
-                              height: 5.0,
-                            ),
-                            Text(
-                              Bidi.stripHtmlIfNeeded(
-                                      snapshot.data![index].content!.value)
-                                  .trim(),
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.left,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                        direction: SwipeDirection.startToEnd,
+                        shadow: const BoxShadow(),
+                        color: Colors.deepPurple.shade200.withOpacity(0.2),
+                        verticalPadding: 5.0,
+                        horizontalPadding: 5.0,
+                        onSwiped: (direction) {
+                          Utility().savePost(snapshot.data![index]);
+                          Utility().saveSaved();
+                        },
+                        key: ValueKey(snapshot.data![index].title),
+                        backgroundBuilder: (context, direction, controller) {
+                          if (direction == SwipeDirection.startToEnd) {
+                            return Container(
+                              padding: const EdgeInsets.only(left: 30.0),
+                              alignment: Alignment.centerLeft,
+                              child: const Row(
+                                children: [
+                                  Icon(IconlyLight.arrow_down),
+                                  Text("Save Post"),
+                                ],
+                              ),
+                            );
+                          } else {
+                            return const Text("");
+                          }
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                snapshot.data![index].title.toString(),
+                                style: const TextStyle(
+                                    fontFamily: 'Gotham',
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17.0),
+                              ),
+                              Text(
+                                snapshot.data![index] is RssItem
+                                    ? snapshot.data![index].pubDate
+                                        .toString()
+                                        .substring(0, 25)
+                                    : snapshot.data![index].updated.toString(),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 12.0),
+                              ),
+                              const SizedBox(
+                                height: 5.0,
+                              ),
+                              Text(
+                                Bidi.stripHtmlIfNeeded(snapshot.data![index]
+                                            is RssItem
+                                        ? snapshot.data![index].content!.value
+                                            .toString()
+                                        : snapshot.data![index].content
+                                            .toString())
+                                    .trim(),
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
+                          ),
+                        )),
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
