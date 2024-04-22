@@ -18,16 +18,26 @@ class Utility {
 
   Future<void> updateRSS() async {
     prefs = await SharedPreferences.getInstance();
-    Constants.sources = jsonDecode((prefs.getString('sources').toString()));
-    Constants.selected = jsonDecode((prefs.getString('selected').toString()));
-    Constants.savedPosts = jsonDecode((prefs.getString('saved')).toString());
+    if (prefs.getString('sources') != null) {
+      Map<String, dynamic> test =
+          jsonDecode((prefs.getString('sources').toString()));
+      Constants.sources = test.cast<String, String>();
+    }
+    if (prefs.getString('selected') != null) {
+      Map<String, dynamic> selected =
+          jsonDecode((prefs.getString('selected').toString()));
+      Constants.selected = selected.cast<String, String>();
+    }
+    if (prefs.getString('saved') != null) {
+      Constants.savedPosts = jsonDecode((prefs.getString('saved').toString()));
+    }
     for (var url in Constants.selected.values) {
-      await fetchRSS(url); // Await each fetchRSS call
+      await fetchRSS(url);
     }
   }
 
   Future<List<RssItem>> getRSS() async {
-    await updateRSS(); // Ensure data is fetched before returning
+    await updateRSS();
     return feedItems;
   }
 
