@@ -90,10 +90,13 @@ class _SettingsState extends State<Saved> {
               ),
             ),
             onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        SinglePost(post: Constants.savedPosts[index]))),
+              context,
+              MaterialPageRoute(
+                builder: (context) => SinglePost(
+                  post: Constants.savedPosts[index],
+                ),
+              ),
+            ),
           );
         },
       ),

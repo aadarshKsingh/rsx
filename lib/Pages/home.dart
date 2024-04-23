@@ -115,10 +115,13 @@ class _HomeState extends State<Home> {
                           ),
                         )),
                     onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                SinglePost(post: snapshot.data![index]))),
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SinglePost(
+                          post: snapshot.data![index],
+                        ),
+                      ),
+                    ),
                   );
                 },
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:rsx/Pages/gemini.dart';
 import 'package:rsx/Pages/home.dart';
 import 'package:rsx/Pages/saved.dart';
 import 'package:rsx/Pages/sources.dart';
@@ -45,16 +46,21 @@ class _RSXState extends State<RSX> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const Sources()));
                   break;
+                case 'Gemini':
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Gemini()));
               }
             },
             itemBuilder: (BuildContext context) {
-              return {'Sources'}.map((String choice) {
+              return {'Sources', 'Gemini'}.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Row(
                     children: [
-                      const Icon(
-                        IconlyBroken.filter,
+                      Icon(
+                        choice == 'Sources'
+                            ? IconlyBroken.filter
+                            : IconlyBroken.edit,
                         size: 20.0,
                       ),
                       const SizedBox(

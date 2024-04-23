@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:dart_rss/dart_rss.dart';
+import 'package:gemini_flutter/models/geminiTextResponseModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:rsx/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:gemini_flutter/gemini_flutter.dart';
 
 class Utility {
   List rssFeedItems = [];
@@ -75,5 +77,35 @@ class Utility {
   void saveSaved() async {
     prefs = await SharedPreferences.getInstance();
     prefs.setString("saved", jsonEncode(Constants.savedPosts));
+  }
+
+  void saveAPI(String key) async {
+    prefs = await SharedPreferences.getInstance();
+    prefs.setString("gemini", key);
+  }
+
+  Future<String> cutTheBS(String content) async {
+    prefs = await SharedPreferences.getInstance();
+    GeminiHandler().initialize(
+      apiKey: prefs.getString("gemini").toString(),
+      topK: 50,
+      topP: 0.8,
+      outputLength: 1024,
+    );
+    final summarized =
+        await GeminiHandler().geminiPro(text: "Summarize $content");
+    List<Parts>? parts =
+        summarized!.candidates!.first.content!.parts as List<Parts>;
+    String text = "";
+    for (var part in parts) {
+      text += part.text.toString();
+    }
+
+    // ignore: unnecessary_null_comparison
+    if (summarized != null) {
+      return text.toString();
+    } else {
+      return content;
+    }
   }
 }
