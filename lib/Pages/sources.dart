@@ -78,26 +78,36 @@ class _SourcesState extends State<Sources> {
         itemBuilder: (context, index) {
           bool _isSelected = Constants.selected.keys
               .contains(Constants.sources.keys.elementAt(index));
-          return CheckboxListTile(
-            value: _isSelected,
-            onChanged: (val) {
-              setState(() {
-                _isSelected = val ?? true;
-                if (_isSelected) {
-                  final source = {
-                    Constants.sources.keys.elementAt(index):
-                        Constants.sources.values.elementAt(index)
-                  };
-                  Constants.selected.addAll(source);
-                  Utility().saveSelected();
-                } else {
-                  Constants.selected
-                      .remove(Constants.sources.keys.elementAt(index));
-                  Utility().saveSelected();
-                }
-              });
-            },
+          return ListTile(
+            leading: Checkbox(
+              value: _isSelected,
+              onChanged: (val) {
+                setState(() {
+                  _isSelected = val ?? true;
+                  if (_isSelected) {
+                    final source = {
+                      Constants.sources.keys.elementAt(index):
+                          Constants.sources.values.elementAt(index)
+                    };
+                    Constants.selected.addAll(source);
+                    Utility().saveSelected();
+                  } else {
+                    Constants.selected
+                        .remove(Constants.sources.keys.elementAt(index));
+                    Utility().saveSelected();
+                  }
+                });
+              },
+            ),
             title: Text(Constants.sources.keys.elementAt(index).toString()),
+            trailing: IconButton(
+              icon: const Icon(IconlyLight.delete),
+              onPressed: () => setState(() {
+                Constants.sources
+                    .remove(Constants.sources.keys.elementAt(index));
+                Utility().saveSources();
+              }),
+            ),
           );
         },
       ),
