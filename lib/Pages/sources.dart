@@ -39,14 +39,55 @@ class _SourcesState extends State<Sources> {
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text("Name:"),
-                    TextField(
-                      controller: _name,
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(right: 8.0),
+                          child: Text("Name:",
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        Expanded(
+                          child: ConstrainedBox(
+                            constraints:
+                                const BoxConstraints.tightFor(width: 300.0),
+                            child: TextField(
+                              controller: _name,
+                              decoration: InputDecoration(
+                                hintText: 'Enter name',
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0)),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    const Text("URL:"),
-                    TextField(
-                      controller: _url,
+                    const SizedBox(
+                      height: 15.0,
                     ),
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(right: 19.0),
+                          child: Text("URL:",
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        Expanded(
+                          child: ConstrainedBox(
+                            constraints:
+                                const BoxConstraints.tightFor(width: 300),
+                            child: TextField(
+                              controller: _url,
+                              decoration: InputDecoration(
+                                hintText: 'Enter URL',
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0)),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
                 actions: <Widget>[

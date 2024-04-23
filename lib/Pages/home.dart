@@ -1,5 +1,6 @@
 import 'package:dart_rss/dart_rss.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:rsx/Pages/singlePost.dart';
@@ -78,9 +79,9 @@ class _HomeState extends State<Home> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
+                              HtmlWidget(
                                 snapshot.data![index].title.toString(),
-                                style: const TextStyle(
+                                textStyle: const TextStyle(
                                     fontFamily: 'Gotham',
                                     fontWeight: FontWeight.bold,
                                     fontSize: 17.0),

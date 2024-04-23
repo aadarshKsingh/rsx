@@ -35,11 +35,6 @@ class _RSXState extends State<RSX> {
               letterSpacing: 15),
         ),
         actions: [
-          IconButton(
-              onPressed: () => setState(() {
-                    Utility().updateRSS();
-                  }),
-              icon: const Icon(IconlyLight.info_circle)),
           PopupMenuButton<String>(
             popUpAnimationStyle: AnimationStyle(
                 curve: Curves.decelerate,
