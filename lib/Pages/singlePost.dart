@@ -1,7 +1,6 @@
 import 'package:dart_rss/dart_rss.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:iconly/iconly.dart';
 import 'package:rsx/util.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -18,21 +17,7 @@ class _SinglePostState extends State<SinglePost> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-              onPressed: () {
-                widget.post is RssItem
-                    ? widget.post.content!.value
-                    : widget.post.content = Utility().cutTheBS(
-                        widget.post is RssItem
-                            ? widget.post.content!.value.toString()
-                            : widget.post.content);
-                setState(() {});
-              },
-              icon: const Icon(IconlyBroken.star)),
-        ],
-      ),
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.only(left: 8.0),
         child: SingleChildScrollView(
