@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:rsx/constants.dart';
 import 'package:swipeable_tile/swipeable_tile.dart';
 import '../util.dart';
-import 'singlePost.dart';
+import 'singleSavedPost.dart';
 
 class Saved extends StatefulWidget {
   const Saved({super.key});
@@ -65,11 +65,7 @@ class _SettingsState extends State<Saved> {
                           fontSize: 17.0),
                     ),
                     Text(
-                      Constants.savedPosts[index]["post"] == "rss"
-                          ? Constants.savedPosts[index]["date"]
-                              .toString()
-                              .substring(0, 25)
-                          : Constants.savedPosts[index]["date"],
+                      Constants.savedPosts[index]["date"],
                       style: const TextStyle(
                           fontWeight: FontWeight.w300, fontSize: 12.0),
                     ),
@@ -78,9 +74,7 @@ class _SettingsState extends State<Saved> {
                     ),
                     Text(
                       Bidi.stripHtmlIfNeeded(
-                              Constants.savedPosts[index]["post"] == "rss"
-                                  ? Constants.savedPosts[index]["content"]
-                                  : Constants.savedPosts[index]["content"])
+                              Constants.savedPosts[index]["content"])
                           .trim(),
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
@@ -93,7 +87,7 @@ class _SettingsState extends State<Saved> {
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => SinglePost(
+                builder: (context) => SingleSavedPost(
                   post: Constants.savedPosts[index],
                 ),
               ),
