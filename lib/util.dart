@@ -40,7 +40,8 @@ class Utility {
       Constants.selected = selected.cast<String, String>();
     }
     if (prefs.getString('saved') != null) {
-      Constants.savedPosts = jsonDecode((prefs.getString('saved').toString()));
+      Constants.savedPosts =
+          jsonDecode((prefs.getString('saved').toString())) as List;
     }
     for (var url in Constants.selected.values) {
       await fetchRSS(url);
@@ -53,15 +54,33 @@ class Utility {
   }
 
   void savePost(dynamic item) {
-    if (!Constants.savedPosts.contains(item)) {
-      Constants.savedPosts.add(item);
+    bool exists =
+        Constants.savedPosts.any((post) => post["title"] == item.title);
+    if (item is RssItem && !exists) {
+      Map<String, String> rssPost = {
+        "post": "rss",
+        "title": item.title.toString(),
+        "date": item.pubDate.toString(),
+        "author": item.dc!.creator.toString(),
+        "content": item.content!.value,
+        "link": item.link.toString()
+      };
+      Constants.savedPosts.add(rssPost);
+    } else if (item is AtomItem && !exists) {
+      Map<String, String> atomPost = {
+        "post": "atom",
+        "title": item.title.toString(),
+        "date": item.updated.toString(),
+        "author": item.authors.first.name.toString(),
+        "content": item.content.toString(),
+        "link": item.links.first.toString()
+      };
+      Constants.savedPosts.add(atomPost);
     }
   }
 
   void removePost(dynamic item) {
-    if (!Constants.savedPosts.contains(item)) {
-      Constants.savedPosts.remove(item);
-    }
+    Constants.savedPosts.remove(item);
   }
 
   void saveSources() async {

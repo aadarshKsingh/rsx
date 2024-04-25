@@ -1,4 +1,3 @@
-import 'package:dart_rss/dart_rss.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:rsx/util.dart';
@@ -25,7 +24,7 @@ class _SinglePostState extends State<SinglePost> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HtmlWidget(
-                widget.post.title.toString(),
+                widget.post["title"],
                 textStyle: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 25.0,
@@ -34,21 +33,21 @@ class _SinglePostState extends State<SinglePost> {
               const SizedBox(
                 height: 5.0,
               ),
-              Text(widget.post is RssItem
-                  ? widget.post.dc!.creator.toString()
-                  : widget.post.authors.first.name.toString()),
+              Text(widget.post["post"] == "rss"
+                  ? widget.post["author"]
+                  : widget.post["author"]),
               Text(
-                widget.post is RssItem
-                    ? widget.post.pubDate.toString().substring(0, 16)
-                    : widget.post.updated.toString(),
+                widget.post["title"] == "rss"
+                    ? widget.post["date"].substring(0, 16)
+                    : widget.post["date"],
               ),
               const SizedBox(
                 height: 25.0,
               ),
               FutureBuilder<String>(
-                  future: Utility().cutTheBS(widget.post is RssItem
-                      ? widget.post.content!.value
-                      : widget.post.content),
+                  future: Utility().cutTheBS(widget.post["post"] == "rss"
+                      ? widget.post["content"]
+                      : widget.post["content"]),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
@@ -73,8 +72,7 @@ class _SinglePostState extends State<SinglePost> {
                   ),
                   onTap: () async {
                     try {
-                      await launchUrl(
-                          Uri.parse(widget.post.link.toString().trim()));
+                      await launchUrl(Uri.parse(widget.post["link"].trim()));
                       // ignore: empty_catches
                     } catch (e) {}
                   })

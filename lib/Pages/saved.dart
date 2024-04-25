@@ -1,4 +1,3 @@
-import 'package:dart_rss/dart_rss.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
@@ -34,7 +33,7 @@ class _SettingsState extends State<Saved> {
                 const removedSnack = SnackBar(content: Text("Post Removed"));
                 ScaffoldMessenger.of(context).showSnackBar(removedSnack);
               },
-              key: ValueKey(Constants.savedPosts[index].title),
+              key: ValueKey(Constants.savedPosts[index]["title"]),
               backgroundBuilder: (context, direction, controller) {
                 if (direction == SwipeDirection.startToEnd) {
                   return Container(
@@ -59,18 +58,18 @@ class _SettingsState extends State<Saved> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      Constants.savedPosts[index].title.toString(),
+                      Constants.savedPosts[index]["title"],
                       style: const TextStyle(
                           fontFamily: 'Gotham',
                           fontWeight: FontWeight.bold,
                           fontSize: 17.0),
                     ),
                     Text(
-                      Constants.savedPosts[index] is RssItem
-                          ? Constants.savedPosts[index].pubDate
+                      Constants.savedPosts[index]["post"] == "rss"
+                          ? Constants.savedPosts[index]["date"]
                               .toString()
                               .substring(0, 25)
-                          : Constants.savedPosts[index].updated.toString(),
+                          : Constants.savedPosts[index]["date"],
                       style: const TextStyle(
                           fontWeight: FontWeight.w300, fontSize: 12.0),
                     ),
@@ -78,10 +77,10 @@ class _SettingsState extends State<Saved> {
                       height: 5.0,
                     ),
                     Text(
-                      Bidi.stripHtmlIfNeeded(Constants.savedPosts[index]
-                                  is RssItem
-                              ? Constants.savedPosts[index].content!.value
-                              : Constants.savedPosts[index].content.toString())
+                      Bidi.stripHtmlIfNeeded(
+                              Constants.savedPosts[index]["post"] == "rss"
+                                  ? Constants.savedPosts[index]["content"]
+                                  : Constants.savedPosts[index]["content"])
                           .trim(),
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
