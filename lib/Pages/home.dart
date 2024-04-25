@@ -54,6 +54,10 @@ class _HomeState extends State<Home> {
                         onSwiped: (direction) {
                           Utility().savePost(snapshot.data![index]);
                           Utility().saveSaved();
+                          const savedSnack =
+                              SnackBar(content: Text("Post Saved"));
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(savedSnack);
                         },
                         key: ValueKey(snapshot.data![index].title),
                         backgroundBuilder: (context, direction, controller) {

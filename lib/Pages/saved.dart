@@ -31,6 +31,8 @@ class _SettingsState extends State<Saved> {
               onSwiped: (direction) {
                 Utility().removePost(Constants.savedPosts[index]);
                 Utility().saveSaved();
+                const removedSnack = SnackBar(content: Text("Post Removed"));
+                ScaffoldMessenger.of(context).showSnackBar(removedSnack);
               },
               key: ValueKey(Constants.savedPosts[index].title),
               backgroundBuilder: (context, direction, controller) {
