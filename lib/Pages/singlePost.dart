@@ -55,9 +55,9 @@ class _SinglePostState extends State<SinglePost> {
                     } else if (snapshot.hasError) {
                       return Center(child: Text(snapshot.error.toString()));
                     } else {
-                      return Text(
+                      return HtmlWidget(
                         snapshot.data.toString(),
-                        style: const TextStyle(fontSize: 15.0),
+                        textStyle: const TextStyle(fontSize: 15.0),
                       );
                     }
                   }),

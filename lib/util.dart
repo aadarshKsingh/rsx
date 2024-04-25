@@ -86,6 +86,9 @@ class Utility {
 
   Future<String> cutTheBS(String content) async {
     prefs = await SharedPreferences.getInstance();
+    if (prefs.getString("gemini") == null) {
+      return content;
+    }
     GeminiHandler().initialize(
       apiKey: prefs.getString("gemini").toString(),
       topK: 50,
