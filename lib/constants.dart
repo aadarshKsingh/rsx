@@ -6,4 +6,5 @@ class Constants {
   };
   static Map<String, String> selected = {};
   static List savedPosts = [];
+  static bool gemini_status = false;
 }

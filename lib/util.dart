@@ -43,6 +43,9 @@ class Utility {
       Constants.savedPosts =
           jsonDecode((prefs.getString('saved').toString())) as List;
     }
+    if (prefs.getBool('gemini_status') != null) {
+      Constants.gemini_status = prefs.getBool("gemini_status") ?? false;
+    }
     for (var url in Constants.selected.values) {
       await fetchRSS(url);
     }
@@ -105,7 +108,8 @@ class Utility {
 
   Future<String> cutTheBS(String content) async {
     prefs = await SharedPreferences.getInstance();
-    if (prefs.getString("gemini") == null) {
+    if (prefs.getBool("gemini_status") == false ||
+        prefs.getString("gemini") == null) {
       return content;
     }
     GeminiHandler().initialize(
@@ -129,5 +133,15 @@ class Utility {
     } else {
       return content;
     }
+  }
+
+  void setGeminiStatus(bool value) async {
+    prefs = await SharedPreferences.getInstance();
+    prefs.setBool("gemini_status", value);
+  }
+
+  Future<String> getAPI() async {
+    prefs = await SharedPreferences.getInstance();
+    return prefs.getString("gemini").toString();
   }
 }
