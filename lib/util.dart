@@ -139,9 +139,4 @@ class Utility {
     prefs = await SharedPreferences.getInstance();
     prefs.setBool("gemini_status", value);
   }
-
-  Future<String> getAPI() async {
-    prefs = await SharedPreferences.getInstance();
-    return prefs.getString("gemini").toString();
-  }
 }

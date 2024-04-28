@@ -4,6 +4,7 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:rsx/Pages/singlePost.dart';
+import 'package:rsx/constants.dart';
 import 'package:rsx/util.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:swipeable_tile/swipeable_tile.dart';
@@ -48,7 +49,7 @@ class _HomeState extends State<Home> {
                     child: SwipeableTile.swipeToTriggerCard(
                         direction: SwipeDirection.startToEnd,
                         shadow: const BoxShadow(),
-                        color: Colors.deepPurple.shade200.withOpacity(0.2),
+                        color: Constants.dark.inverseSurface.withAlpha(50),
                         verticalPadding: 5.0,
                         horizontalPadding: 5.0,
                         onSwiped: (direction) {

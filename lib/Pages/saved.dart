@@ -24,7 +24,7 @@ class _SettingsState extends State<Saved> {
             child: SwipeableTile.card(
               direction: SwipeDirection.startToEnd,
               shadow: const BoxShadow(),
-              color: Colors.deepPurple.shade200.withOpacity(0.2),
+              color: Constants.dark.inverseSurface.withAlpha(50),
               verticalPadding: 5.0,
               horizontalPadding: 5.0,
               onSwiped: (direction) {
