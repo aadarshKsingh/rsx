@@ -6,10 +6,11 @@ import 'package:http/http.dart' as http;
 import 'package:rsx/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gemini_flutter/gemini_flutter.dart';
+import 'package:get_storage/get_storage.dart';
 
 class Utility {
   List rssFeedItems = [];
-  late final SharedPreferences prefs;
+  late final GetStorage box;
   // ignore: prefer_typing_uninitialized_variables
   dynamic channel;
   Future<void> fetchRSS(String url) async {
@@ -28,23 +29,20 @@ class Utility {
   }
 
   Future<void> updateRSS() async {
-    prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('sources') != null) {
-      Map<String, dynamic> test =
-          jsonDecode((prefs.getString('sources').toString()));
-      Constants.sources = test.cast<String, String>();
+    box = GetStorage();
+    if (box.read('sources') != null) {
+      // Map<String, dynamic> test = ;
+      Constants.sources = box.read('sources');
     }
-    if (prefs.getString('selected') != null) {
-      Map<String, dynamic> selected =
-          jsonDecode((prefs.getString('selected').toString()));
-      Constants.selected = selected.cast<String, String>();
+    if (box.read('selected') != null) {
+      // Map<String, dynamic> selected =
+      Constants.selected = box.read('selected');
     }
-    if (prefs.getString('saved') != null) {
-      Constants.savedPosts =
-          jsonDecode((prefs.getString('saved').toString())) as List;
+    if (box.read('saved') != null) {
+      Constants.savedPosts = box.read('saved');
     }
-    if (prefs.getBool('gemini_status') != null) {
-      Constants.gemini_status = prefs.getBool("gemini_status") ?? false;
+    if (box.read('gemini_status') != null) {
+      Constants.gemini_status = box.read("gemini_status") ?? false;
     }
     for (var url in Constants.selected.values) {
       await fetchRSS(url);
@@ -87,33 +85,32 @@ class Utility {
   }
 
   void saveSources() async {
-    prefs = await SharedPreferences.getInstance();
-    prefs.setString("sources", jsonEncode(Constants.sources));
+    box = GetStorage();
+    box.write("sources", Constants.sources);
   }
 
   void saveSelected() async {
-    prefs = await SharedPreferences.getInstance();
-    prefs.setString("selected", jsonEncode(Constants.selected));
+    box = GetStorage();
+    box.write("selected", Constants.selected);
   }
 
   void saveSaved() async {
-    prefs = await SharedPreferences.getInstance();
-    prefs.setString("saved", jsonEncode(Constants.savedPosts));
+    box = GetStorage();
+    box.write("saved", Constants.savedPosts);
   }
 
   void saveAPI(String key) async {
-    prefs = await SharedPreferences.getInstance();
-    prefs.setString("gemini", key);
+    box = GetStorage();
+    box.write("gemini", key);
   }
 
   Future<String> cutTheBS(String content) async {
-    prefs = await SharedPreferences.getInstance();
-    if (prefs.getBool("gemini_status") == false ||
-        prefs.getString("gemini") == null) {
+    box = GetStorage();
+    if (box.read("gemini_status") == false || box.read("gemini") == null) {
       return content;
     }
     GeminiHandler().initialize(
-      apiKey: prefs.getString("gemini").toString(),
+      apiKey: box.read("gemini").toString(),
       topK: 50,
       topP: 0.8,
       outputLength: 1024,
@@ -136,7 +133,7 @@ class Utility {
   }
 
   void setGeminiStatus(bool value) async {
-    prefs = await SharedPreferences.getInstance();
-    prefs.setBool("gemini_status", value);
+    box = GetStorage();
+    box.write("gemini_status", value);
   }
 }

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:rsx/constants.dart';
 import 'package:rsx/rsx.dart';
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+void main() async {
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
