@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:dart_rss/dart_rss.dart';
 import 'package:gemini_flutter/models/geminiTextResponseModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:rsx/constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gemini_flutter/gemini_flutter.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -31,18 +28,16 @@ class Utility {
   Future<void> updateRSS() async {
     box = GetStorage();
     if (box.read('sources') != null) {
-      // Map<String, dynamic> test = ;
-      Constants.sources = box.read('sources');
+      Constants.sources = box.read('sources').cast<String, String>();
     }
     if (box.read('selected') != null) {
-      // Map<String, dynamic> selected =
-      Constants.selected = box.read('selected');
+      Constants.selected = box.read('selected').cast<String, String>();
     }
     if (box.read('saved') != null) {
       Constants.savedPosts = box.read('saved');
     }
     if (box.read('gemini_status') != null) {
-      Constants.gemini_status = box.read("gemini_status") ?? false;
+      Constants.gemini_status.value = box.read("gemini_status") ?? false;
     }
     for (var url in Constants.selected.values) {
       await fetchRSS(url);

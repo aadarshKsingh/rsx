@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:rsx/constants.dart';
 import 'package:rsx/util.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:get/get.dart';
 
 class Gemini extends StatefulWidget {
   const Gemini({super.key});
@@ -13,9 +15,11 @@ class Gemini extends StatefulWidget {
 class _GeminiState extends State<Gemini> {
   late TextEditingController _api;
   bool geminiStatus = false;
+  late var box;
   @override
   void initState() {
-    _api = TextEditingController();
+    box = GetStorage();
+    _api = TextEditingController(text: box.read("gemini") ?? '');
     super.initState();
   }
 
@@ -28,13 +32,15 @@ class _GeminiState extends State<Gemini> {
       body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Padding(
           padding: const EdgeInsets.all(10.0),
-          child: TextField(
-            controller: _api,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0)),
-                hintText: "Enter your API key"),
-            textAlign: TextAlign.center,
+          child: Obx(
+            () => TextField(
+              controller: _api,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15.0)),
+                  hintText: "Enter your API key"),
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
         GestureDetector(
@@ -69,13 +75,14 @@ class _GeminiState extends State<Gemini> {
           child: ListTile(
             leading: const Text("Enable Gemini Text Summarization"),
             trailing: Switch(
-              value: Constants.gemini_status,
+              value: Constants.gemini_status.value,
               onChanged: ((value) => setState(() {
-                    if (!Constants.gemini_status && _api.text.isNotEmpty) {
-                      Constants.gemini_status = value;
+                    if (!Constants.gemini_status.value &&
+                        _api.text.isNotEmpty) {
+                      Constants.gemini_status.value = value;
                       Utility().setGeminiStatus(value);
                     } else {
-                      Constants.gemini_status = false;
+                      Constants.gemini_status.value = false;
                       Utility().setGeminiStatus(false);
                     }
                   })),

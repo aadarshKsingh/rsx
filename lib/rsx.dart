@@ -5,6 +5,7 @@ import 'package:rsx/Pages/home.dart';
 import 'package:rsx/Pages/saved.dart';
 import 'package:rsx/Pages/sources.dart';
 import 'package:rsx/util.dart';
+import 'package:get/get.dart';
 
 class RSX extends StatefulWidget {
   const RSX({super.key});
@@ -43,12 +44,10 @@ class _RSXState extends State<RSX> {
             onSelected: (value) {
               switch (value) {
                 case 'Sources':
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Sources()));
+                  Get.to(Sources());
                   break;
                 case 'Gemini':
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Gemini()));
+                  Get.to(Gemini());
               }
             },
             itemBuilder: (BuildContext context) {

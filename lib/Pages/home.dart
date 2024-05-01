@@ -8,7 +8,7 @@ import 'package:rsx/constants.dart';
 import 'package:rsx/util.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:swipeable_tile/swipeable_tile.dart';
-
+import 'package:get/get.dart';
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -119,12 +119,9 @@ class _HomeState extends State<Home> {
                             ],
                           ),
                         )),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SinglePost(
+                    onTap: () => Get.to(SinglePost(
                           post: snapshot.data![index],
-                        ),
+                        
                       ),
                     ),
                   );

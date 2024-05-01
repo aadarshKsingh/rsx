@@ -5,6 +5,7 @@ import 'package:rsx/constants.dart';
 import 'package:swipeable_tile/swipeable_tile.dart';
 import '../util.dart';
 import 'singleSavedPost.dart';
+import 'package:get/get.dart';
 
 class Saved extends StatefulWidget {
   const Saved({super.key});
@@ -84,12 +85,9 @@ class _SettingsState extends State<Saved> {
                 ),
               ),
             ),
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SingleSavedPost(
+            onTap: () => Get.to(SingleSavedPost(
                   post: Constants.savedPosts[index],
-                ),
+                
               ),
             ),
           );

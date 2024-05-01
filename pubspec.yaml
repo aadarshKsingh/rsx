@@ -35,6 +35,7 @@ dependencies:
     sdk: flutter
   flutter_widget_from_html: ^0.14.11
   gemini_flutter: ^0.1.1
+  get: ^4.6.6
   get_storage: ^2.1.1
   http: ^1.2.1
   iconly: ^1.0.1
