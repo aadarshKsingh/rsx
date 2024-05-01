@@ -44,10 +44,10 @@ class _RSXState extends State<RSX> {
             onSelected: (value) {
               switch (value) {
                 case 'Sources':
-                  Get.to(Sources());
+                  Get.to(const Sources());
                   break;
                 case 'Gemini':
-                  Get.to(Gemini());
+                  Get.to(const Gemini());
               }
             },
             itemBuilder: (BuildContext context) {

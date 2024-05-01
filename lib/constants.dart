@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import './util.dart';
 
 class Constants {
   static Map<String, String> sources = {
@@ -8,7 +9,7 @@ class Constants {
     "AndroidAuthority": "http://feed.androidauthority.com"
   }.obs;
   static Map<String, String> selected = {};
-  static List savedPosts = [];
+  static List<Post> savedPosts = [];
   static RxBool gemini_status = false.obs;
   static late ColorScheme dark;
   static late ColorScheme light;

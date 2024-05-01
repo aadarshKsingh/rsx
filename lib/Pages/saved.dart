@@ -34,7 +34,7 @@ class _SettingsState extends State<Saved> {
                 const removedSnack = SnackBar(content: Text("Post Removed"));
                 ScaffoldMessenger.of(context).showSnackBar(removedSnack);
               },
-              key: ValueKey(Constants.savedPosts[index]["title"]),
+              key: ValueKey(Constants.savedPosts[index].title),
               backgroundBuilder: (context, direction, controller) {
                 if (direction == SwipeDirection.startToEnd) {
                   return Container(
@@ -59,14 +59,14 @@ class _SettingsState extends State<Saved> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      Constants.savedPosts[index]["title"],
+                      Constants.savedPosts[index].title,
                       style: const TextStyle(
                           fontFamily: 'Gotham',
                           fontWeight: FontWeight.bold,
                           fontSize: 17.0),
                     ),
                     Text(
-                      Constants.savedPosts[index]["date"],
+                      Constants.savedPosts[index].date,
                       style: const TextStyle(
                           fontWeight: FontWeight.w300, fontSize: 12.0),
                     ),
@@ -75,7 +75,7 @@ class _SettingsState extends State<Saved> {
                     ),
                     Text(
                       Bidi.stripHtmlIfNeeded(
-                              Constants.savedPosts[index]["content"])
+                              Constants.savedPosts[index].description)
                           .trim(),
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
@@ -85,9 +85,9 @@ class _SettingsState extends State<Saved> {
                 ),
               ),
             ),
-            onTap: () => Get.to(SingleSavedPost(
-                  post: Constants.savedPosts[index],
-                
+            onTap: () => Get.to(
+              SingleSavedPost(
+                post: Constants.savedPosts[index],
               ),
             ),
           );

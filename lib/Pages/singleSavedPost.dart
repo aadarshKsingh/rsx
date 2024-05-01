@@ -24,7 +24,7 @@ class _SinglePostState extends State<SingleSavedPost> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HtmlWidget(
-                widget.post["title"],
+                widget.post.title,
                 textStyle: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 25.0,
@@ -33,15 +33,15 @@ class _SinglePostState extends State<SingleSavedPost> {
               const SizedBox(
                 height: 5.0,
               ),
-              Text(widget.post["author"]),
+              Text(widget.post.author),
               Text(
-                widget.post["date"],
+                widget.post.date,
               ),
               const SizedBox(
                 height: 25.0,
               ),
               FutureBuilder<String>(
-                  future: Utility().cutTheBS(widget.post["content"]),
+                  future: Utility().cutTheBS(widget.post.description),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
@@ -66,7 +66,7 @@ class _SinglePostState extends State<SingleSavedPost> {
                   ),
                   onTap: () async {
                     try {
-                      await launchUrl(Uri.parse(widget.post["link"].trim()));
+                      await launchUrl(Uri.parse(widget.post.link.trim()));
                       // ignore: empty_catches
                     } catch (e) {}
                   })

@@ -1,4 +1,3 @@
-import 'package:dart_rss/dart_rss.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:iconly/iconly.dart';
@@ -9,6 +8,7 @@ import 'package:rsx/util.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:swipeable_tile/swipeable_tile.dart';
 import 'package:get/get.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<List>(
+      body: FutureBuilder<List<Post>>(
         future: Utility().getRSS(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -92,11 +92,7 @@ class _HomeState extends State<Home> {
                                     fontSize: 17.0),
                               ),
                               Text(
-                                snapshot.data![index] is RssItem
-                                    ? snapshot.data![index].pubDate
-                                        .toString()
-                                        .substring(0, 25)
-                                    : snapshot.data![index].updated.toString(),
+                                snapshot.data![index].date,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w300,
                                     fontSize: 12.0),
@@ -105,12 +101,8 @@ class _HomeState extends State<Home> {
                                 height: 5.0,
                               ),
                               Text(
-                                Bidi.stripHtmlIfNeeded(snapshot.data![index]
-                                            is RssItem
-                                        ? snapshot.data![index].content!.value
-                                            .toString()
-                                        : snapshot.data![index].content
-                                            .toString())
+                                Bidi.stripHtmlIfNeeded(
+                                        snapshot.data![index].description)
                                     .trim(),
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
@@ -119,9 +111,9 @@ class _HomeState extends State<Home> {
                             ],
                           ),
                         )),
-                    onTap: () => Get.to(SinglePost(
-                          post: snapshot.data![index],
-                        
+                    onTap: () => Get.to(
+                      SinglePost(
+                        post: snapshot.data![index],
                       ),
                     ),
                   );

@@ -113,44 +113,42 @@ class _SourcesState extends State<Sources> {
           )
         ],
       ),
-      body: Obx(
-        () => ListView.builder(
-          itemCount: Constants.sources.length,
-          itemBuilder: (context, index) {
-            bool _isSelected = Constants.selected.keys
-                .contains(Constants.sources.keys.elementAt(index));
-            return ListTile(
-              leading: Checkbox(
-                value: _isSelected,
-                onChanged: (val) {
-                  setState(() {
-                    _isSelected = val ?? true;
-                    if (_isSelected) {
-                      final source = {
-                        Constants.sources.keys.elementAt(index):
-                            Constants.sources.values.elementAt(index)
-                      };
-                      Constants.selected.addAll(source);
-                      Utility().saveSelected();
-                    } else {
-                      Constants.selected
-                          .remove(Constants.sources.keys.elementAt(index));
-                      Utility().saveSelected();
-                    }
-                  });
-                },
-              ),
-              title: Text(Constants.sources.keys.elementAt(index).toString()),
-              trailing: IconButton(
-                  icon: const Icon(IconlyLight.delete),
-                  onPressed: () {
-                    Constants.sources
+      body: ListView.builder(
+        itemCount: Constants.sources.length,
+        itemBuilder: (context, index) {
+          bool _isSelected = Constants.selected.keys
+              .contains(Constants.sources.keys.elementAt(index));
+          return ListTile(
+            leading: Checkbox(
+              value: _isSelected,
+              onChanged: (val) {
+                setState(() {
+                  _isSelected = val ?? true;
+                  if (_isSelected) {
+                    final source = {
+                      Constants.sources.keys.elementAt(index):
+                          Constants.sources.values.elementAt(index)
+                    };
+                    Constants.selected.addAll(source);
+                    Utility().saveSelected();
+                  } else {
+                    Constants.selected
                         .remove(Constants.sources.keys.elementAt(index));
-                    Utility().saveSources();
-                  }),
-            );
-          },
-        ),
+                    Utility().saveSelected();
+                  }
+                });
+              },
+            ),
+            title: Text(Constants.sources.keys.elementAt(index).toString()),
+            trailing: IconButton(
+                icon: const Icon(IconlyLight.delete),
+                onPressed: () {
+                  Constants.sources
+                      .remove(Constants.sources.keys.elementAt(index));
+                  Utility().saveSources();
+                }),
+          );
+        },
       ),
     );
   }
