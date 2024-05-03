@@ -23,6 +23,9 @@ class _SourcesState extends State<Sources> {
 
   @override
   Widget build(BuildContext context) {
+    Constants _const = Get.put(Constants());
+    Utility _util = Get.put(Utility());
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -101,8 +104,8 @@ class _SourcesState extends State<Sources> {
                   TextButton(
                     onPressed: () {
                       Map<String, String> source = {_name.text: _url.text};
-                      Constants.sources.addAll(source);
-                      Utility().saveSources();
+                      _const.sources.addAll(source);
+                      _util.saveSources();
                       Get.back();
                     },
                     child: const Text('Save'),
@@ -114,39 +117,43 @@ class _SourcesState extends State<Sources> {
         ],
       ),
       body: ListView.builder(
-        itemCount: Constants.sources.length,
+        itemCount: _const.sources.length,
         itemBuilder: (context, index) {
-          bool _isSelected = Constants.selected.keys
-              .contains(Constants.sources.keys.elementAt(index));
-          return ListTile(
-            leading: Checkbox(
-              value: _isSelected,
-              onChanged: (val) {
-                setState(() {
-                  _isSelected = val ?? true;
-                  if (_isSelected) {
-                    final source = {
-                      Constants.sources.keys.elementAt(index):
-                          Constants.sources.values.elementAt(index)
-                    };
-                    Constants.selected.addAll(source);
-                    Utility().saveSelected();
-                  } else {
-                    Constants.selected
-                        .remove(Constants.sources.keys.elementAt(index));
-                    Utility().saveSelected();
-                  }
-                });
-              },
-            ),
-            title: Text(Constants.sources.keys.elementAt(index).toString()),
-            trailing: IconButton(
-                icon: const Icon(IconlyLight.delete),
-                onPressed: () {
-                  Constants.sources
-                      .remove(Constants.sources.keys.elementAt(index));
-                  Utility().saveSources();
-                }),
+          return Obx(
+            () {
+              bool _isSelected = _const.selected.keys
+                  .contains(_const.sources.keys.elementAt(index));
+              return ListTile(
+                leading: Checkbox(
+                  value: _isSelected,
+                  onChanged: (val) {
+                    _isSelected = val ?? true;
+                    if (_isSelected) {
+                      final source = {
+                        _const.sources.keys.elementAt(index):
+                            _const.sources.values.elementAt(index)
+                      };
+                      _const.selected.addAll(source);
+                      _util.saveSelected();
+                    } else {
+                      _const.selected
+                          .remove(_const.sources.keys.elementAt(index));
+                      _util.rssFeedItems
+                          .remove(_const.sources.keys.elementAt(index));
+                      _util.saveSelected();
+                    }
+                  },
+                ),
+                title: Text(_const.sources.keys.elementAt(index).toString()),
+                trailing: IconButton(
+                    icon: const Icon(IconlyLight.delete),
+                    onPressed: () {
+                      _const.sources
+                          .remove(_const.sources.keys.elementAt(index));
+                      _util.saveSources();
+                    }),
+              );
+            },
           );
         },
       ),

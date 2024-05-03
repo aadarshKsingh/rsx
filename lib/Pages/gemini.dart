@@ -25,6 +25,7 @@ class _GeminiState extends State<Gemini> {
 
   @override
   Widget build(BuildContext context) {
+    Constants _const = Get.put(Constants());
     return Scaffold(
       appBar: AppBar(
         title: const Text("Gemini AI for summarization"),
@@ -32,15 +33,13 @@ class _GeminiState extends State<Gemini> {
       body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Obx(
-            () => TextField(
-              controller: _api,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0)),
-                  hintText: "Enter your API key"),
-              textAlign: TextAlign.center,
-            ),
+          child: TextField(
+            controller: _api,
+            decoration: InputDecoration(
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.0)),
+                hintText: "Enter your API key"),
+            textAlign: TextAlign.center,
           ),
         ),
         GestureDetector(
@@ -74,18 +73,19 @@ class _GeminiState extends State<Gemini> {
         Expanded(
           child: ListTile(
             leading: const Text("Enable Gemini Text Summarization"),
-            trailing: Switch(
-              value: Constants.gemini_status.value,
-              onChanged: ((value) => setState(() {
-                    if (!Constants.gemini_status.value &&
-                        _api.text.isNotEmpty) {
-                      Constants.gemini_status.value = value;
-                      Utility().setGeminiStatus(value);
-                    } else {
-                      Constants.gemini_status.value = false;
-                      Utility().setGeminiStatus(false);
-                    }
-                  })),
+            trailing: Obx(
+              () => Switch(
+                value: _const.gemini_status.value,
+                onChanged: ((value) {
+                  if (!_const.gemini_status.value && _api.text.isNotEmpty) {
+                    _const.gemini_status.value = value;
+                    Utility().setGeminiStatus(value);
+                  } else {
+                    _const.gemini_status.value = false;
+                    Utility().setGeminiStatus(false);
+                  }
+                }),
+              ),
             ),
           ),
         )

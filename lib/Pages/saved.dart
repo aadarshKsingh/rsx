@@ -15,83 +15,86 @@ class Saved extends StatefulWidget {
 }
 
 class _SettingsState extends State<Saved> {
+  Constants _const = Get.put(Constants());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: Constants.savedPosts.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            child: SwipeableTile.card(
-              direction: SwipeDirection.startToEnd,
-              shadow: const BoxShadow(),
-              color: Constants.dark.inverseSurface.withAlpha(50),
-              verticalPadding: 5.0,
-              horizontalPadding: 5.0,
-              onSwiped: (direction) {
-                Utility().removePost(Constants.savedPosts[index]);
-                Utility().saveSaved();
-                const removedSnack = SnackBar(content: Text("Post Removed"));
-                ScaffoldMessenger.of(context).showSnackBar(removedSnack);
-              },
-              key: ValueKey(Constants.savedPosts[index].title),
-              backgroundBuilder: (context, direction, controller) {
-                if (direction == SwipeDirection.startToEnd) {
-                  return Container(
-                    padding: const EdgeInsets.only(left: 30.0),
-                    alignment: Alignment.centerLeft,
-                    child: const Row(
-                      children: [
-                        Icon(IconlyLight.delete),
-                        Text("Remove Post"),
-                      ],
-                    ),
-                  );
-                } else {
-                  return const Text("");
-                }
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0, vertical: 10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      Constants.savedPosts[index].title,
-                      style: const TextStyle(
-                          fontFamily: 'Gotham',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17.0),
-                    ),
-                    Text(
-                      Constants.savedPosts[index].date,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w300, fontSize: 12.0),
-                    ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      Bidi.stripHtmlIfNeeded(
-                              Constants.savedPosts[index].description)
-                          .trim(),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                    ),
-                  ],
+      body: Obx(
+        () => ListView.builder(
+          itemCount: _const.savedPosts.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              child: SwipeableTile.card(
+                direction: SwipeDirection.startToEnd,
+                shadow: const BoxShadow(),
+                color: Constants.dark.inverseSurface.withAlpha(50),
+                verticalPadding: 5.0,
+                horizontalPadding: 5.0,
+                onSwiped: (direction) {
+                  Utility().removePost(_const.savedPosts[index]);
+                  Utility().saveSaved();
+                  const removedSnack = SnackBar(content: Text("Post Removed"));
+                  ScaffoldMessenger.of(context).showSnackBar(removedSnack);
+                },
+                key: ValueKey(_const.savedPosts[index].title),
+                backgroundBuilder: (context, direction, controller) {
+                  if (direction == SwipeDirection.startToEnd) {
+                    return Container(
+                      padding: const EdgeInsets.only(left: 30.0),
+                      alignment: Alignment.centerLeft,
+                      child: const Row(
+                        children: [
+                          Icon(IconlyLight.delete),
+                          Text("Remove Post"),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return const Text("");
+                  }
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        _const.savedPosts[index].title,
+                        style: const TextStyle(
+                            fontFamily: 'Gotham',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17.0),
+                      ),
+                      Text(
+                        _const.savedPosts[index].date,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w300, fontSize: 12.0),
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Text(
+                        Bidi.stripHtmlIfNeeded(
+                                _const.savedPosts[index].description)
+                            .trim(),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.left,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            onTap: () => Get.to(
-              SingleSavedPost(
-                post: Constants.savedPosts[index],
+              onTap: () => Get.to(
+                SingleSavedPost(
+                  post: _const.savedPosts[index],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:dart_rss/dart_rss.dart';
 import 'package:gemini_flutter/models/geminiTextResponseModel.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:rsx/constants.dart';
 import 'package:gemini_flutter/gemini_flutter.dart';
@@ -20,84 +21,87 @@ class Post {
       required this.link});
 }
 
-class Utility {
-  List<Post> rssFeedItems = [];
+class Utility extends GetxController {
   final GetStorage box = GetStorage();
+  final _const = Get.put(Constants());
   // ignore: prefer_typing_uninitialized_variables
+  final feedItems = <String, List<Post>>{}.obs;
+  var rssFeedItems = [].obs;
   dynamic channel;
-  fetchRSS(String url) async {
-    final client = http.Client();
-    final response = await client.get(Uri.parse(url));
-    final body = await response.body;
-    try {
-      channel = RssFeed.parse(body);
-      for (var item in channel.items) {
-        rssFeedItems.add(Post(
-            title: item.title,
-            author: item.dc.creator,
-            date: item.pubDate,
-            description: item.content.value,
-            link: item.link));
-      }
-    } catch (e) {
-      try {
-        channel = AtomFeed.parse(body);
-        for (var item in channel.items) {
-          rssFeedItems.add(Post(
-              title: item.title,
-              author: item.author.first.name,
-              date: item.updated,
-              description: item.content,
-              link: item.link));
-        }
-      } catch (e) {}
-    }
-  }
-
-  Future<void> updateRSS() async {
+  void fetchRSS() async {
     if (box.read('sources') != null) {
-      Constants.sources = box.read('sources').cast<String, String>();
+      _const.sources = box.read('sources').cast<String, String>();
     }
     if (box.read('selected') != null) {
-      Constants.selected = box.read('selected').cast<String, String>();
+      _const.selected.value = box.read('selected').cast<String, String>();
     }
     if (box.read('saved') != null) {
-      Constants.savedPosts = box.read('saved');
+      _const.savedPosts = box.read('saved');
     }
     if (box.read('gemini_status') != null) {
-      Constants.gemini_status.value = box.read("gemini_status") ?? false;
+      _const.gemini_status.value = box.read("gemini_status") ?? false;
     }
-    for (var url in Constants.selected.values) {
-      await fetchRSS(url);
-    }
-  }
 
-  Future<List<Post>> getRSS() async {
-    await updateRSS();
-    return rssFeedItems;
+    final client = http.Client();
+    _const.selected.forEach((key, value) async {
+      final response = await client.get(Uri.parse(value));
+      final body = await response.body;
+
+      try {
+        channel = RssFeed.parse(body);
+        List<Post> singleFeedItems = [];
+        for (var item in channel.items) {
+          singleFeedItems.add(Post(
+              title: item.title,
+              author: item.dc.creator,
+              date: item.pubDate,
+              description: item.content.value,
+              link: item.link));
+        }
+        feedItems.addAll({key: singleFeedItems});
+      } catch (e) {
+        try {
+          channel = AtomFeed.parse(body);
+          List<Post> singleFeedItems = [];
+          for (var item in channel.items) {
+            singleFeedItems.add(Post(
+                title: item.title,
+                author: item.author.first.name,
+                date: item.updated,
+                description: item.content,
+                link: item.link));
+          }
+          feedItems.addAll({key: singleFeedItems});
+        } catch (e) {}
+      }
+    });
+
+    feedItems.forEach((key, value) {
+      rssFeedItems.addAll(value);
+    });
   }
 
   void savePost(Post item) {
-    bool exists = Constants.savedPosts.any((post) => post.title == item.title);
+    bool exists = _const.savedPosts.any((post) => post.title == item.title);
     if (!exists) {
-      Constants.savedPosts.add(item);
+      _const.savedPosts.add(item);
     }
   }
 
   void removePost(dynamic item) {
-    Constants.savedPosts.remove(item);
+    _const.savedPosts.remove(item);
   }
 
   void saveSources() async {
-    box.write("sources", Constants.sources);
+    box.write("sources", _const.sources);
   }
 
   void saveSelected() async {
-    box.write("selected", Constants.selected);
+    box.write("selected", _const.selected);
   }
 
   void saveSaved() async {
-    box.write("saved", Constants.savedPosts);
+    box.write("saved", _const.savedPosts);
   }
 
   void saveAPI(String key) async {

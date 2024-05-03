@@ -16,12 +16,12 @@ class RSX extends StatefulWidget {
 
 class _RSXState extends State<RSX> {
   static const List<Widget> pages = [Home(), Saved()];
-  int _selectedIndex = 0;
+  RxInt _selectedIndex = 0.obs;
   @override
   void initState() {
     super.initState();
 
-    Utility().updateRSS();
+    Utility().fetchRSS();
   }
 
   @override
@@ -75,16 +75,16 @@ class _RSXState extends State<RSX> {
         ],
       ),
       bottomNavigationBar: NavigationBar(
-          selectedIndex: _selectedIndex,
+          selectedIndex: _selectedIndex.value,
           onDestinationSelected: (index) => setState(() {
-                _selectedIndex = index;
+                _selectedIndex.value = index;
               }),
           destinations: const [
             NavigationDestination(icon: Icon(IconlyLight.home), label: "Home"),
             NavigationDestination(
                 icon: Icon(IconlyLight.arrow_down), label: "Saved")
           ]),
-      body: pages[_selectedIndex],
+      body: Obx(() => pages.elementAt(_selectedIndex.value)),
     );
   }
 }

@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import './util.dart';
 
-class Constants {
-  static Map<String, String> sources = {
+class Constants extends GetxController {
+  Map<String, String> sources = {
     "XDA": "https://www.xda-developers.com/feed",
     "HackerNoon": "https://hackernoon.com/feed",
     "AndroidAuthority": "http://feed.androidauthority.com"
   }.obs;
-  static Map<String, String> selected = {};
-  static List<Post> savedPosts = [];
-  static RxBool gemini_status = false.obs;
+  RxMap<String, String> selected = <String, String>{}.obs;
+  RxList<Post> savedPosts = <Post>[].obs;
+  RxBool gemini_status = false.obs;
   static late ColorScheme dark;
   static late ColorScheme light;
 }
