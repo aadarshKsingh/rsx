@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import './util.dart';
 
 class Constants extends GetxController {
-  Map<String, String> sources = {
+  RxMap<String, String> sources = <String, String>{
     "XDA": "https://www.xda-developers.com/feed",
     "HackerNoon": "https://hackernoon.com/feed",
     "AndroidAuthority": "http://feed.androidauthority.com"

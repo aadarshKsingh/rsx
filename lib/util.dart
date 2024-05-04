@@ -25,23 +25,27 @@ class Utility extends GetxController {
   final GetStorage box = GetStorage();
   final _const = Get.put(Constants());
   // ignore: prefer_typing_uninitialized_variables
-  final feedItems = <String, List<Post>>{}.obs;
+  var feedItems = <String, List<Post>>{}.obs;
   var rssFeedItems = [].obs;
   dynamic channel;
-  void fetchRSS() async {
+
+  void updateGS() {
     if (box.read('sources') != null) {
-      _const.sources = box.read('sources').cast<String, String>();
+      _const.sources.value = box.read('sources');
     }
     if (box.read('selected') != null) {
       _const.selected.value = box.read('selected').cast<String, String>();
     }
     if (box.read('saved') != null) {
-      _const.savedPosts = box.read('saved');
+      _const.savedPosts.value = box.read('saved');
     }
     if (box.read('gemini_status') != null) {
-      _const.gemini_status.value = box.read("gemini_status") ?? false;
+      _const.gemini_status.value =
+          box.read("gemini_status").cast<bool>() ?? false;
     }
+  }
 
+  void fetchRSS() async {
     final client = http.Client();
     _const.selected.forEach((key, value) async {
       final response = await client.get(Uri.parse(value));
@@ -93,15 +97,15 @@ class Utility extends GetxController {
   }
 
   void saveSources() async {
-    box.write("sources", _const.sources);
+    box.write("sources", _const.sources.value);
   }
 
   void saveSelected() async {
-    box.write("selected", _const.selected);
+    box.write("selected", _const.selected.value);
   }
 
   void saveSaved() async {
-    box.write("saved", _const.savedPosts);
+    box.write("saved", _const.savedPosts.value);
   }
 
   void saveAPI(String key) async {
